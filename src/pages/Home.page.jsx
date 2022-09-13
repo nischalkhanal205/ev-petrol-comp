@@ -1,15 +1,15 @@
 import React from "react";
-import Footer from "../components/tailwind/Footer";
-import Form from "../components/tailwind/Form";
-import HeroSection from "../components/tailwind/HeroSection";
-import ImportChoice from "../components/tailwind/ImportChoice";
+import Footer from "../components/Footer";
+import Form from "../components/Form";
+import HeroSection from "../components/HeroSection";
+import ImportChoice from "../components/ImportChoice";
 
 const Home = () => {
   return (
     <div>
       <HeroSection />
       <ImportChoice />
-      <Form import={false} />
+      <Form />
       <Footer/>
     </div>
   );

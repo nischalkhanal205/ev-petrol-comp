@@ -1,4 +1,84 @@
-export default function Form({ import: isImport }) {
+import React, { useState, useContext } from "react";
+import { FormContext } from "../state/formContext";
+
+export default function Form() {
+  const [formState, setFormState] = useContext(FormContext);
+
+  const handleChange = (e) => {
+    const changeState = (obj, key) => {
+      setFormState((prevState) => ({
+        ...prevState,
+        [obj]: {
+          ...prevState.obj,
+          [key]: e.target.value,
+        },
+      }));
+    };
+
+    //change state according to change in form
+    switch (e.target.name) {
+      case "dailyTravelDistance":
+        changeState("basicDetails", "dailyTravelDistance");
+      case "comparisionDuration":
+        changeState("basicDetails", "comparisionDuration");
+      case "evVehicleName":
+        changeState("evDetails", "vehicleName");
+      case "evInitialBuyingCost":
+        changeState("evDetails", "initialBuyingCost");
+      case "motorPower":
+        changeState("evDetails", "motorPower");
+      case "transportAndOtherCosts":
+        changeState("evDetails", "transportAndOtherCosts");
+      case "claimedRange":
+        changeState("evDetails", "claimedRange");
+      case "batteryCapacity":
+        changeState("evDetails", "batteryCapacity");
+      case "batteryChargeCycle":
+        setFormState((prevState) => ({
+          ...prevState,
+          evDetails: {
+            ...prevState.evDetails,
+            batteryChargeCycle: {
+              ...prevState.basicDetails.batteryChargeCycle,
+              cycle: e.target.value,
+            },
+          },
+        }));
+      case "batteyType":
+        setFormState((prevState) => ({
+          ...prevState,
+          evDetails: {
+            ...prevState.evDetails,
+            batteryChargeCycle: {
+              ...prevState.basicDetails.batteryChargeCycle,
+              type: e.target.value,
+            },
+          },
+        }));
+      case "perUnitElectricityCharge":
+        changeState("evDetails", "perUnitElectricityCharge");
+      case "vehicleType":
+        console.log(e);
+        changeState("fuelVehicleDetails", "vehicle");
+      case "fuelVehicleName":
+        changeState("fuelVehicleDetails", "vehicleName");
+      case "fuelInitialBuyingCost":
+        changeState("fuelVehicleDetails", "initialBuyingCost");
+      case "mileage":
+        changeState("fuelVehicleDetails", "mileage");
+      case "servicingCost":
+        changeState("fuelVehicleDetails", "servicingCost");
+      case "servicingDuration":
+        changeState("fuelVehicleDetails", "servicingDuration");
+      default:
+        return formState;
+    }
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log(formState);
+  };
   return (
     <div className="flex justify-center ">
       <form className="container space-y-8 divide-y divide-gray-300 bg-white shadow sm:rounded-lg p-5">
@@ -23,8 +103,9 @@ export default function Form({ import: isImport }) {
               <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                 <input
                   type="text"
-                  name="price"
-                  id="price"
+                  name="dailyTravelDistance"
+                  value={formState.basicDetails.dailyTravelDistance}
+                  onChange={handleChange}
                   className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center">
@@ -47,8 +128,8 @@ export default function Form({ import: isImport }) {
               <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                 <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                   <select
-                    id="location"
-                    name="location"
+                    name="comparisionDuration"
+                    value={formState.basicDetails.comparisionDuration}
                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                     defaultValue="Canada"
                   >
@@ -84,9 +165,10 @@ export default function Form({ import: isImport }) {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="max-w-lg flex rounded-md shadow-sm">
                     <input
+                      value={formState.evDetails.vehicleName}
                       type="text"
-                      name="name"
-                      id="name"
+                      name="evVehicleName"
+                      id="evVehicleName"
                       autoComplete="name"
                       className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0  rounded-md sm:text-sm border-gray-300"
                     />
@@ -105,13 +187,14 @@ export default function Form({ import: isImport }) {
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <span className="text-gray-500 sm:text-md">
-                        {isImport ? "₹" : "रु"}
+                        {formState.isImport ? "₹" : "रु"}
                       </span>
                     </div>
                     <input
-                      type="text"
-                      name="price"
-                      id="price"
+                      value={formState.evDetails.initialBuyingCost}
+                      type="number"
+                      name="evInitialBuyingCost"
+                      id="evInitialBuyingCost"
                       className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       placeholder="0.00"
                     />
@@ -124,14 +207,14 @@ export default function Form({ import: isImport }) {
                         name="currency"
                         className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
-                        <option> {isImport ? "INR" : "NRS"}</option>
+                        <option> {formState.isImport ? "INR" : "NRS"}</option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {isImport && (
+              {formState.isImport && (
                 <div>
                   <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 pb-5">
                     <label
@@ -143,9 +226,10 @@ export default function Form({ import: isImport }) {
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
                       <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                         <input
+                          value={formState.evDetails.motorPower}
                           type="text"
-                          name="price"
-                          id="price"
+                          name="motorPower"
+                          id="motorPower"
                           className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
                         <div className="absolute inset-y-0 right-0 flex items-center">
@@ -170,9 +254,10 @@ export default function Form({ import: isImport }) {
                           <span className="text-gray-500 sm:text-md">रु</span>
                         </div>
                         <input
+                          value={formState.evDetails.transportAndOtherCosts}
                           type="text"
-                          name="price"
-                          id="price"
+                          name="transportAndOtherCosts"
+                          id="transportAndOtherCosts"
                           className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="0.00"
                         />
@@ -204,9 +289,10 @@ export default function Form({ import: isImport }) {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
+                      value={formState.evDetails.claimedRange}
                       type="text"
-                      name="range"
-                      id="range"
+                      name="claimedRange"
+                      id="claimedRange"
                       className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
@@ -230,9 +316,10 @@ export default function Form({ import: isImport }) {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
+                      value={formState.evDetails.batteryCapacity}
                       type="text"
-                      name="price"
-                      id="price"
+                      name="batteryCapacity"
+                      id="batteryCapacity"
                       className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
@@ -254,10 +341,10 @@ export default function Form({ import: isImport }) {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
-                      type="number"
-                      name="number"
-                      value={1500}
-                      id="price"
+                      type="text"
+                      name="batteryChargeCycle"
+                      value={formState.evDetails.batteryChargeCycle.cycle}
+                      id="batteryChargeCycle"
                       className=" block w-full rounded-md border-gray-300  pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
@@ -265,8 +352,9 @@ export default function Form({ import: isImport }) {
                         Battery
                       </label>
                       <select
-                        id="currency"
-                        name="currency"
+                        id="batteyType"
+                        name="batteyType"
+                        value={formState.evDetails.batteryChargeCycle.type}
                         className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       >
                         <option> Li-ion </option>
@@ -288,8 +376,9 @@ export default function Form({ import: isImport }) {
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                       <select
-                        id="location"
-                        name="location"
+                        value={formState.evDetails.perUnitElectricityCharge}
+                        id="perUnitElectricityCharge"
+                        name="perUnitElectricityCharge"
                         className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                         defaultValue="Canada"
                       >
@@ -330,13 +419,17 @@ export default function Form({ import: isImport }) {
                       <p className="text-sm text-gray-500">
                         Choose your vehicle type according to the fuel engine
                       </p>
-                      <div className="mt-4 space-y-4">
+                      <div
+                        className="mt-4 space-y-4"
+                        >
                         <div className="flex items-center">
                           <input
+                        onChange={handleChange}
+                        value={formState.fuelVehicleDetails.vehicle}
                             id="push-everything"
-                            name="push-notifications"
+                            name="vehicleType"
                             type="radio"
-                            className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
+                            className="focus:ring-violet-500 h-4 w-4 text-violet-600 border-gray-300"
                           />
                           <label
                             htmlFor="push-everything"
@@ -347,10 +440,12 @@ export default function Form({ import: isImport }) {
                         </div>
                         <div className="flex items-center">
                           <input
+                           onChange={handleChange}
+                           value={formState.fuelVehicleDetails.vehicle}
                             id="push-everything"
-                            name="push-notifications"
+                            name="vehicleType"
                             type="radio"
-                            className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
+                            className="focus:ring-violet-500 h-4 w-4 text-violet-600 border-gray-300"
                           />
                           <label
                             htmlFor="push-everything"
@@ -361,10 +456,12 @@ export default function Form({ import: isImport }) {
                         </div>
                         <div className="flex items-center">
                           <input
+                           onChange={handleChange}
+                           value={formState.fuelVehicleDetails.vehicle}
                             id="push-email"
-                            name="push-notifications"
+                            name="vehicleType"
                             type="radio"
-                            className="focus:ring-green-500 h-4 w-4 text-green-600 border-gray-300"
+                            className="focus:ring-violet-500 h-4 w-4 text-violet-600 border-gray-300"
                           />
                           <label
                             htmlFor="push-email"
@@ -389,8 +486,8 @@ export default function Form({ import: isImport }) {
                     <div className="max-w-lg flex rounded-md shadow-sm">
                       <input
                         type="text"
-                        name="name"
-                        id="name"
+                        name="fuelVehicleName"
+                        id="fuelVehicleName"
                         autoComplete="name"
                         className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0  rounded-md sm:text-sm border-gray-300"
                       />
@@ -412,8 +509,8 @@ export default function Form({ import: isImport }) {
                       </div>
                       <input
                         type="text"
-                        name="price"
-                        id="price"
+                        name="fuelInitialBuyingCost"
+                        id="fuelInitialBuyingCost"
                         className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="0.00"
                       />
@@ -424,7 +521,7 @@ export default function Form({ import: isImport }) {
                   </div>
                 </div>
 
-                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 pb-5">
                   <label
                     htmlFor="name"
                     className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
@@ -448,6 +545,58 @@ export default function Form({ import: isImport }) {
                     </div>
                   </div>
                 </div>
+
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 pb-5">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                  >
+                    Vehicle Servicing Cost
+                  </label>
+                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                    <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span className="text-gray-500 sm:text-md">रु</span>
+                      </div>
+                      <input
+                        type="text"
+                        name="servicingCost"
+                        id="servicingCost"
+                        className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        placeholder="0.00"
+                        value={2000}
+                      />
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+                        <span className="text-gray-500 sm:text-sm">NRS</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                  >
+                    Servicing Duration
+                  </label>
+                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                    <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
+                      <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <select
+                          id="servicingDuration"
+                          name="servicingDuration"
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          defaultValue="Canada"
+                        >
+                          <option>After Every 2 Months</option>
+                          <option>After Every 3 Months</option>
+                          <option>After Every 4 Months</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -463,7 +612,8 @@ export default function Form({ import: isImport }) {
             </button>
             <button
               type="submit"
-              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              onClick={handleClick}
+              className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-700 hover:bg-violet-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Start Comparision
             </button>

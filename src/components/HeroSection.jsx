@@ -2,7 +2,6 @@
 import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import "../../index.css";
 
 const navigation = [
   { name: "Compare", href: "#" },
@@ -131,13 +130,13 @@ export default function HeroSection() {
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="w-6 h-6"
+                      className="w-6 h-6"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M10.5 21l5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 016-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 01-3.827-5.802"
                       />
                     </svg>
@@ -190,9 +189,9 @@ export default function HeroSection() {
                 </div>
                 <a
                   href="#"
-                  className="block w-full px-5 py-3 text-center font-medium  text-green-700 bg-gray-50 hover:bg-gray-100"
+                  className="block w-full px-5 py-3 text-center font-medium  text-violet-700 bg-gray-50 hover:bg-gray-100"
                 >
-                  Log in
+                  Change Language
                 </a>
               </div>
             </Popover.Panel>
@@ -202,9 +201,9 @@ export default function HeroSection() {
         <main className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24">
           <div className="text-center">
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-              <span className="block xl:inline">Cost Comparision </span>
-              <span className="block text-green-700 xl:inline">
-                Petrol/Diesel VS Electric Vehicles
+              <span className="block xl:inline">Cost Comparision </span> <br />
+              <span className="block text-violet-700 xl:inline">
+                Fuel VS Electric Vehicles
               </span>
             </h1>
             <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
@@ -215,8 +214,8 @@ export default function HeroSection() {
             <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
               <div className="rounded-md shadow">
                 <a
-                  href="#"
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-700 hover:bg-green-800 md:py-4 md:text-lg md:px-10"
+                  href="#startForm"
+                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 md:py-4 md:text-lg md:px-10"
                 >
                   Get started
                 </a>
