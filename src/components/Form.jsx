@@ -102,9 +102,11 @@ export default function Form() {
             <div className="mt-1 sm:mt-0 sm:col-span-2">
               <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                 <input
-                  type="text"
+                  type="number"
                   name="dailyTravelDistance"
                   value={formState.basicDetails.dailyTravelDistance}
+                  min="5" 
+                  max="499"
                   onChange={handleChange}
                   className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
@@ -290,9 +292,11 @@ export default function Form() {
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
                       value={formState.evDetails.claimedRange}
-                      type="text"
+                      type="number"
                       name="claimedRange"
                       id="claimedRange"
+
+                      max="500"
                       className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
@@ -422,53 +426,20 @@ export default function Form() {
                       <div
                         className="mt-4 space-y-4"
                         >
-                        <div className="flex items-center">
-                          <input
-                        onChange={handleChange}
-                        value={formState.fuelVehicleDetails.vehicle}
-                            id="push-everything"
-                            name="vehicleType"
-                            type="radio"
-                            className="focus:ring-violet-500 h-4 w-4 text-violet-600 border-gray-300"
-                          />
-                          <label
-                            htmlFor="push-everything"
-                            className="ml-3 block text-sm font-medium text-gray-700"
-                          >
-                            Petrol (Bike / Scooter)
-                          </label>
-                        </div>
-                        <div className="flex items-center">
-                          <input
+                        
+                         <div className="flex items-center">
+                          <select
                            onChange={handleChange}
                            value={formState.fuelVehicleDetails.vehicle}
                             id="push-everything"
                             name="vehicleType"
-                            type="radio"
-                            className="focus:ring-violet-500 h-4 w-4 text-violet-600 border-gray-300"
-                          />
-                          <label
-                            htmlFor="push-everything"
-                            className="ml-3 block text-sm font-medium text-gray-700"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                           >
-                            Petrol (Car)
-                          </label>
-                        </div>
-                        <div className="flex items-center">
-                          <input
-                           onChange={handleChange}
-                           value={formState.fuelVehicleDetails.vehicle}
-                            id="push-email"
-                            name="vehicleType"
-                            type="radio"
-                            className="focus:ring-violet-500 h-4 w-4 text-violet-600 border-gray-300"
-                          />
-                          <label
-                            htmlFor="push-email"
-                            className="ml-3 block text-sm font-medium text-gray-700"
-                          >
-                            Diesel (Car / 4 Wheeler)
-                          </label>
+                            <option> Petrol (Bike / Scooter)</option>
+                            <option> Diesel (Car / 4 Wheeler)</option>
+                            <option>  Petrol (Car)</option>
+                          </select>
+                          
                         </div>
                       </div>
                     </div>
