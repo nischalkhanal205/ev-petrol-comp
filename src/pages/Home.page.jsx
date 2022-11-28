@@ -12,7 +12,7 @@ const Home = () => {
       <ImportChoice />
       <Form />
       <Footer/>
-      <DevFooter/>
+      {/* <DevFooter/> */}
     </div>
   );
 };

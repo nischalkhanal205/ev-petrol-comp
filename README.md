@@ -2,7 +2,7 @@
 
 # EV VS Fuel
 
-Cost Comparision between Fuel Vehicles & Electric Vehicles
+Cost Comparison between Fuel Vehicles & Electric Vehicles
 
 We just want to show the people of Nepal, why they should go with expensive Electric Vehicles over cheap Petrol/Diesel Vehicles. Its time to bring the change !!
 ## Preview
