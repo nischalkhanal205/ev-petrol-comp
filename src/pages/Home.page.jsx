@@ -1,5 +1,4 @@
 import React from "react";
-import DevFooter from "../components/DevFooter";
 import Footer from "../components/Footer";
 import Form from "../components/Form";
 import HeroSection from "../components/HeroSection";
@@ -12,7 +11,7 @@ const Home = () => {
       <ImportChoice />
       <Form />
       <Footer/>
-      {/* <DevFooter/> */}
+  
     </div>
   );
 };

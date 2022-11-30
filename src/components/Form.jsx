@@ -18,10 +18,10 @@ export default function Form() {
     <div className="flex justify-center ">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="container space-y-8 divide-y divide-gray-300 bg-white shadow sm:rounded-lg p-5"
+        className="container space-y-8 divide-y divide-gray-300 bg-white shadow sm:rounded-lg p-10"
       >
-        <div className="space-y-8 divide-y divide-gray-300 sm:space-y-5">
-          <div>
+        <div className="space-y-8 divide-y divide-gray-300 sm:space-y-5  ">
+          <div >
             <h3 className="text-xl leading-6 font-medium text-gray-900 pt-5">
               Basic Details
             </h3>
@@ -277,9 +277,17 @@ export default function Form() {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
-                      type="text"
+                      type="number"
                       {...register("batteryCapacity", {
                         required: "Required",
+                        min: {
+                          value: 0.1,
+                          message: "Minimum value is 0.1",
+                        },
+                        max: {
+                          value: 100,
+                          message: "Maximum value is 100",
+                        },
                       })}
                       className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -300,34 +308,23 @@ export default function Form() {
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
                 >
-                  Battery Charge Cycle
+                  Battery Type
                 </label>
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
-                    <input
-                      type="number"
-                      {...register("chargeCycle", {
-                        required: "Required",
-                      })}
-                      className=" block w-full rounded-md border-gray-300  pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center">
-                      <label htmlFor="currency" className="sr-only">
-                        Battery
-                      </label>
+                    <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                       <select
-                        {...register("batteryType")}
-                        className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        {...register("chargeCycle")}
+                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                       >
-                        <option value="Li-ion"> Li-ion </option>
-                        <option value="LiFePO4"> LiFePO4 </option>
-                        <option value="Other"> Other </option>
+                        <option value={1500}> Li-ion </option>
+                        <option value={2000}> LiFePO4 </option>
+                        <option value={1000}> Other </option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                 <label
                   htmlFor="name"
@@ -386,13 +383,13 @@ export default function Form() {
                             {...register("fuelVehicle")}
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                           >
-                            <option value="Petrol (Bike / Scooter)">
+                            <option value="petrol-2wheel">
                               Petrol (Bike / Scooter)
                             </option>
-                            <option value="Diesel (Car / 4 Wheeler)">
+                            <option value="diesel">
                               Diesel (Car / 4 Wheeler)
                             </option>
-                            <option value="Petrol (Car)"> Petrol (Car)</option>
+                            <option value="petrol-4wheel"> Petrol (Car)</option>
                           </select>
                         </div>
                       </div>

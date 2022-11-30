@@ -44,4 +44,3 @@ function calcChargeCost({
   }
 }
 
-calcChargeCost(9.5, 4.6, 5);
