@@ -10,11 +10,8 @@ export default function Form() {
     formState: { errors },
   } = useForm({ defaultValues: formState });
 
-
   const onSubmit = (data) => {
- 
-
-
+    setFormState(data);
   };
 
   return (
