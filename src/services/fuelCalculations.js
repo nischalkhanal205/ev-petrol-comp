@@ -1,40 +1,76 @@
-function calcFuelCost({
+import { calcBatteryLife } from "./evCalculations";
+
+export function calcFuelCost({
   dailyTravelDistance,
   mileage,
   fuelVehicle,
   comparisonDuration,
+  chargeCycle,
+  claimedRange,
 }) {
-  //calc per day consumption (-12 to match real life mileage)
+  //Convert strings to number for comparison
+  dailyTravelDistance = Number(dailyTravelDistance);
+  mileage = Number(mileage);
+
+  //Calculate per day consumption (-12 to match real life mileage)
   const perDayConsumption = dailyTravelDistance / (mileage - 12);
 
-  const totalFuelConsumption = perDayConsumption * comparisonDuration;
+  //Get the battery life
+  const batteryLife = calcBatteryLife({
+    claimedRange,
+    dailyTravelDistance,
+    chargeCycle,
+  });
 
-  //diesel = 178/litre (28 Nov, 2022)
-  //petrol = 181/litre (28 Nov, 2022)
-  let fuelCost;
-  if (fuelVehicle == "diesel") {
-    fuelCost = totalFuelConsumption * 178;
-  } else {
-    fuelCost = totalFuelConsumption * 181;
-  }
+  //Calculate the total fuel consumed according to the comparisonDuration parameter
+  const totalFuelConsumption = Math.round(
+    perDayConsumption *
+      (comparisonDuration == "lifetime"
+        ? batteryLife * 365
+        : Number(comparisonDuration) * 365)
+  );
+
+  //?diesel = 178/litre (28 Nov, 2022)
+  //?petrol = 181/litre (28 Nov, 2022)
+
+  const fuelCost = Math.round(
+    fuelVehicle == "diesel"
+      ? totalFuelConsumption * 178
+      : totalFuelConsumption * 181
+  );
 
   return { fuelCost, totalFuelConsumption };
 }
 
-function calcServicingCost({
+export function calcServicingCost({
   servicingDuration,
   servicingCost,
   comparisonDuration,
+  claimedRange,
+  dailyTravelDistance,
+  chargeCycle,
 }) {
-  const servicingFrequency = (comparisonDuration * 12) / servicingDuration;
+  //Get the battery life
+  const batteryLife = calcBatteryLife({
+    claimedRange,
+    dailyTravelDistance,
+    chargeCycle,
+  });
 
-  return servicingFrequency * servicingCost;
+  const servicingFrequency =
+    ((comparisonDuration == "lifetime"
+      ? batteryLife
+      : Number(comparisonDuration)) *
+      12) /
+    Number(servicingDuration);
+
+  return servicingFrequency * Number(servicingCost);
 }
 
-function calcCo2Produced({ fuelConsumed, fuelVehicle }) {
+export function calcCo2Produced({ totalFuelConsumption, fuelVehicle }) {
   if (fuelVehicle == "diesel") {
-    return fuelConsumed * 2.68;
+    return Number(totalFuelConsumption) * 2.68;
   } else {
-    return fuelConsumed * 2.3;
+    return Number(totalFuelConsumption) * 2.3;
   }
 }

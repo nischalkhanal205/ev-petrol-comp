@@ -1,6 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { FormContext } from "../state/formContext";
 import { useForm } from "react-hook-form";
+
+import { compareVehicles } from "../services/compareVehicles";
 
 export default function Form() {
   const [formState, setFormState] = useContext(FormContext);
@@ -12,6 +14,8 @@ export default function Form() {
 
   const onSubmit = (data) => {
     setFormState(data);
+
+    compareVehicles(data);
   };
 
   return (
@@ -21,7 +25,7 @@ export default function Form() {
         className="container space-y-8 divide-y divide-gray-300 bg-white shadow sm:rounded-lg p-10"
       >
         <div className="space-y-8 divide-y divide-gray-300 sm:space-y-5  ">
-          <div >
+          <div>
             <h3 className="text-xl leading-6 font-medium text-gray-900 pt-5">
               Basic Details
             </h3>
@@ -278,16 +282,9 @@ export default function Form() {
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
                       type="number"
+                      step="0.1"
                       {...register("batteryCapacity", {
                         required: "Required",
-                        min: {
-                          value: 0.1,
-                          message: "Minimum value is 0.1",
-                        },
-                        max: {
-                          value: 100,
-                          message: "Maximum value is 100",
-                        },
                       })}
                       className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -526,6 +523,9 @@ export default function Form() {
                         <span className="text-gray-500 sm:text-sm">NRS</span>
                       </div>
                     </div>
+                    <p className="text-sm text-red-600">
+                      {errors.servicingCost?.message}
+                    </p>
                   </div>
                 </div>
               </div>
