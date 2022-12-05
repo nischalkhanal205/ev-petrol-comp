@@ -1,95 +1,37 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { FormContext } from "../state/formContext";
+import { useForm } from "react-hook-form";
+
+import { compareVehicles } from "../services/compareVehicles";
 
 export default function Form() {
   const [formState, setFormState] = useContext(FormContext);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues: formState });
 
-  const handleChange = (e) => {
-    const changeState = (obj, key) => {
-      setFormState((prevState) => ({
-        ...prevState,
-        [obj]: {
-          ...prevState.obj,
-          [key]: e.target.value,
-        },
-      }));
-    };
+  const onSubmit = (data) => {
+    setFormState(data);
 
-    //change state according to change in form
-    switch (e.target.name) {
-      case "dailyTravelDistance":
-        changeState("basicDetails", "dailyTravelDistance");
-      case "comparisionDuration":
-        changeState("basicDetails", "comparisionDuration");
-      case "evVehicleName":
-        changeState("evDetails", "vehicleName");
-      case "evInitialBuyingCost":
-        changeState("evDetails", "initialBuyingCost");
-      case "motorPower":
-        changeState("evDetails", "motorPower");
-      case "transportAndOtherCosts":
-        changeState("evDetails", "transportAndOtherCosts");
-      case "claimedRange":
-        changeState("evDetails", "claimedRange");
-      case "batteryCapacity":
-        changeState("evDetails", "batteryCapacity");
-      case "batteryChargeCycle":
-        setFormState((prevState) => ({
-          ...prevState,
-          evDetails: {
-            ...prevState.evDetails,
-            batteryChargeCycle: {
-              ...prevState.basicDetails.batteryChargeCycle,
-              cycle: e.target.value,
-            },
-          },
-        }));
-      case "batteyType":
-        setFormState((prevState) => ({
-          ...prevState,
-          evDetails: {
-            ...prevState.evDetails,
-            batteryChargeCycle: {
-              ...prevState.basicDetails.batteryChargeCycle,
-              type: e.target.value,
-            },
-          },
-        }));
-      case "perUnitElectricityCharge":
-        changeState("evDetails", "perUnitElectricityCharge");
-      case "vehicleType":
-        console.log(e);
-        changeState("fuelVehicleDetails", "vehicle");
-      case "fuelVehicleName":
-        changeState("fuelVehicleDetails", "vehicleName");
-      case "fuelInitialBuyingCost":
-        changeState("fuelVehicleDetails", "initialBuyingCost");
-      case "mileage":
-        changeState("fuelVehicleDetails", "mileage");
-      case "servicingCost":
-        changeState("fuelVehicleDetails", "servicingCost");
-      case "servicingDuration":
-        changeState("fuelVehicleDetails", "servicingDuration");
-      default:
-        return formState;
-    }
+    compareVehicles(data);
   };
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    console.log(formState);
-  };
   return (
     <div className="flex justify-center ">
-      <form className="container space-y-8 divide-y divide-gray-300 bg-white shadow sm:rounded-lg p-5">
-        <div className="space-y-8 divide-y divide-gray-300 sm:space-y-5">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="container space-y-8 divide-y divide-gray-300 bg-white shadow sm:rounded-lg p-10"
+      >
+        <div className="space-y-8 divide-y divide-gray-300 sm:space-y-5  ">
           <div>
             <h3 className="text-xl leading-6 font-medium text-gray-900 pt-5">
               Basic Details
             </h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">
               Enter all the details related to your EV which you want to compare
-              with Petrol/Deisel vehicle.
+              with Petrol/Diesel vehicle.
             </p>
           </div>
           <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:border-gray-200 sm:pt-5">
@@ -103,11 +45,13 @@ export default function Form() {
               <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                 <input
                   type="number"
-                  name="dailyTravelDistance"
-                  value={formState.basicDetails.dailyTravelDistance}
-                  min="5" 
-                  max="499"
-                  onChange={handleChange}
+                  {...register("dailyTravelDistance", {
+                    required: "Required",
+                    min: {
+                      value: 5,
+                      message: "Minimum travel distance is 5",
+                    },
+                  })}
                   className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center">
@@ -116,6 +60,9 @@ export default function Form() {
                   </div>
                 </div>
               </div>
+              <p className="text-sm text-red-600 ">
+                {errors.dailyTravelDistance?.message}
+              </p>
             </div>
           </div>
 
@@ -124,21 +71,21 @@ export default function Form() {
               htmlFor="name"
               className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
             >
-              Comparision Duration
+              Comparison Duration
             </label>
             <div className="mt-1 sm:mt-0 sm:col-span-2">
               <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                 <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                   <select
-                    name="comparisionDuration"
-                    value={formState.basicDetails.comparisionDuration}
+                    {...register("comparisonDuration")}
                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    defaultValue="Canada"
                   >
-                    <option>Lifetime (As long as EV's Battery Lasts)</option>
-                    <option>For 5 Years</option>
-                    <option>For 10 Years</option>
-                    <option>For 15 Years</option>
+                    <option value="lifetime">
+                      Lifetime (As long as EV's Battery Lasts)
+                    </option>
+                    <option value="5">For 5 Years</option>
+                    <option value="10">For 10 Years</option>
+                    <option value="15">For 15 Years</option>
                   </select>
                 </div>
               </div>
@@ -152,7 +99,7 @@ export default function Form() {
               </h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
                 Enter all the details related to your EV which you want to
-                compare with Petrol/Deisel vehicle.
+                compare with Petrol/Diesel vehicle.
               </p>
             </div>
 
@@ -167,11 +114,8 @@ export default function Form() {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="max-w-lg flex rounded-md shadow-sm">
                     <input
-                      value={formState.evDetails.vehicleName}
                       type="text"
-                      name="evVehicleName"
-                      id="evVehicleName"
-                      autoComplete="name"
+                      {...register("evName")}
                       className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0  rounded-md sm:text-sm border-gray-300"
                     />
                   </div>
@@ -193,10 +137,10 @@ export default function Form() {
                       </span>
                     </div>
                     <input
-                      value={formState.evDetails.initialBuyingCost}
+                      {...register("evInitialBuyingCost", {
+                        required: "Required",
+                      })}
                       type="number"
-                      name="evInitialBuyingCost"
-                      id="evInitialBuyingCost"
                       className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       placeholder="0.00"
                     />
@@ -213,6 +157,9 @@ export default function Form() {
                       </select>
                     </div>
                   </div>
+                  <p className="text-sm text-red-600 ">
+                    {errors.evInitialBuyingCost?.message}
+                  </p>
                 </div>
               </div>
 
@@ -228,10 +175,14 @@ export default function Form() {
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
                       <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                         <input
-                          value={formState.evDetails.motorPower}
-                          type="text"
-                          name="motorPower"
-                          id="motorPower"
+                          {...register("motorPower", {
+                            required: "Required",
+                            min: {
+                              value: 0.5,
+                              message: "Minimum value is 0.5 KW",
+                            },
+                          })}
+                          type="number"
                           className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         />
                         <div className="absolute inset-y-0 right-0 flex items-center">
@@ -240,6 +191,9 @@ export default function Form() {
                           </div>
                         </div>
                       </div>
+                      <p className="text-sm text-red-600 ">
+                        {errors.motorPower?.message}
+                      </p>
                     </div>
                   </div>
 
@@ -256,10 +210,8 @@ export default function Form() {
                           <span className="text-gray-500 sm:text-md">रु</span>
                         </div>
                         <input
-                          value={formState.evDetails.transportAndOtherCosts}
-                          type="text"
-                          name="transportAndOtherCosts"
-                          id="transportAndOtherCosts"
+                          type="number"
+                          {...register("transportAndOtherCosts")}
                           className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="0.00"
                         />
@@ -291,12 +243,18 @@ export default function Form() {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
-                      value={formState.evDetails.claimedRange}
                       type="number"
-                      name="claimedRange"
-                      id="claimedRange"
-
-                      max="500"
+                      {...register("claimedRange", {
+                        required: "Required",
+                        min: {
+                          value: 40,
+                          message: "Minimum value is 40 KM/Charge",
+                        },
+                        max: {
+                          value: 500,
+                          message: "Maximum value is 500 KM/Charge",
+                        },
+                      })}
                       className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
@@ -307,6 +265,9 @@ export default function Form() {
                       </div>
                     </div>
                   </div>
+                  <p className="text-sm text-red-600 ">
+                    {errors.claimedRange?.message}
+                  </p>
                 </div>
               </div>
 
@@ -320,18 +281,22 @@ export default function Form() {
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <input
-                      value={formState.evDetails.batteryCapacity}
-                      type="text"
-                      name="batteryCapacity"
-                      id="batteryCapacity"
+                      type="number"
+                      step="0.1"
+                      {...register("batteryCapacity", {
+                        required: "Required",
+                      })}
                       className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
-                        <span className="text-gray-500 sm:text-sm">KwH</span>
+                        <span className="text-gray-500 sm:text-sm">kWh</span>
                       </div>
                     </div>
                   </div>
+                  <p className="text-sm text-red-600 ">
+                    {errors.batteryCapacity?.message}
+                  </p>
                 </div>
               </div>
 
@@ -340,35 +305,23 @@ export default function Form() {
                   htmlFor="name"
                   className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
                 >
-                  Battery Charge Cycle
+                  Battery Type
                 </label>
                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
-                    <input
-                      type="text"
-                      name="batteryChargeCycle"
-                      value={formState.evDetails.batteryChargeCycle.cycle}
-                      id="batteryChargeCycle"
-                      className=" block w-full rounded-md border-gray-300  pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center">
-                      <label htmlFor="currency" className="sr-only">
-                        Battery
-                      </label>
+                    <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                       <select
-                        id="batteyType"
-                        name="batteyType"
-                        value={formState.evDetails.batteryChargeCycle.type}
-                        className="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        {...register("chargeCycle")}
+                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                       >
-                        <option> Li-ion </option>
-                        <option> LiFePO4 </option>
+                        <option value={1500}> Li-ion </option>
+                        <option value={2000}> LiFePO4 </option>
+                        <option value={1000}> Other </option>
                       </select>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
                 <label
                   htmlFor="name"
@@ -380,15 +333,13 @@ export default function Form() {
                   <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                     <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                       <select
-                        value={formState.evDetails.perUnitElectricityCharge}
-                        id="perUnitElectricityCharge"
-                        name="perUnitElectricityCharge"
+                        {...register("perUnitElectricityCharge")}
                         className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                        defaultValue="Canada"
                       >
-                        <option>Rs. 8.50</option>
-                        <option>Rs. 9.50</option>
-                        <option>Rs. 11.50</option>
+                        <option value={8.5}>Rs. 8.50</option>
+                        <option value={9.5}>Rs. 9.50</option>
+                        <option value={10.5}>Rs. 10.50</option>
+                        <option value={11.5}>Rs. 11.50</option>
                       </select>
                     </div>
                   </div>
@@ -403,7 +354,7 @@ export default function Form() {
                 Petrol / Diesel Vehicle
               </h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                Enter all the details related to your Petrol/Deisel vehicle
+                Enter all the details related to your Petrol/Diesel vehicle
                 which you want to compare with EV.
               </p>
             </div>
@@ -423,23 +374,20 @@ export default function Form() {
                       <p className="text-sm text-gray-500">
                         Choose your vehicle type according to the fuel engine
                       </p>
-                      <div
-                        className="mt-4 space-y-4"
-                        >
-                        
-                         <div className="flex items-center">
+                      <div className="mt-4 space-y-4">
+                        <div className="flex items-center">
                           <select
-                           onChange={handleChange}
-                           value={formState.fuelVehicleDetails.vehicle}
-                            id="push-everything"
-                            name="vehicleType"
+                            {...register("fuelVehicle")}
                             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                           >
-                            <option> Petrol (Bike / Scooter)</option>
-                            <option> Diesel (Car / 4 Wheeler)</option>
-                            <option>  Petrol (Car)</option>
+                            <option value="petrol-2wheel">
+                              Petrol (Bike / Scooter)
+                            </option>
+                            <option value="diesel">
+                              Diesel (Car / 4 Wheeler)
+                            </option>
+                            <option value="petrol-4wheel"> Petrol (Car)</option>
                           </select>
-                          
                         </div>
                       </div>
                     </div>
@@ -457,9 +405,7 @@ export default function Form() {
                     <div className="max-w-lg flex rounded-md shadow-sm">
                       <input
                         type="text"
-                        name="fuelVehicleName"
-                        id="fuelVehicleName"
-                        autoComplete="name"
+                        {...register("fuelVehicleName")}
                         className="flex-1 block w-full focus:ring-indigo-500 focus:border-indigo-500 min-w-0  rounded-md sm:text-sm border-gray-300"
                       />
                     </div>
@@ -479,9 +425,10 @@ export default function Form() {
                         <span className="text-gray-500 sm:text-md">रु</span>
                       </div>
                       <input
-                        type="text"
-                        name="fuelInitialBuyingCost"
-                        id="fuelInitialBuyingCost"
+                        type="number"
+                        {...register("fuelInitialBuyingCost", {
+                          required: "Required",
+                        })}
                         className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         placeholder="0.00"
                       />
@@ -489,6 +436,9 @@ export default function Form() {
                         <span className="text-gray-500 sm:text-sm">NRS</span>
                       </div>
                     </div>
+                    <p className="   text-sm text-red-600">
+                      {errors.fuelInitialBuyingCost?.message}
+                    </p>
                   </div>
                 </div>
 
@@ -503,15 +453,44 @@ export default function Form() {
                     <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                       <input
                         type="number"
-                        name="mileage"
-                        id="mileage"
-                        value={35}
+                        {...register("mileage", {
+                          required: "Required",
+                          min: { value: 10, message: "Minimum value is 10" },
+                          max: { value: 100, message: "Maximum value is 100" },
+                        })}
                         className="block w-full rounded-md border-gray-300 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                       />
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
                         <span className="text-gray-500 sm:text-sm">
                           Km/Ltr.
                         </span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-red-600">
+                      {errors.mileage?.message}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5 pb-5">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                  >
+                    Servicing Duration
+                  </label>
+                  <div className="mt-1 sm:mt-0 sm:col-span-2">
+                    <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
+                      <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        <select
+                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                          {...register("servicingDuration")}
+                        >
+                          <option value={2}>After Every 2 Months</option>
+                          <option value={3}>After Every 3 Months</option>
+                          <option value={4}>After Every 4 Months</option>
+                          <option value={5}>After Every 5 Months</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -530,42 +509,23 @@ export default function Form() {
                         <span className="text-gray-500 sm:text-md">रु</span>
                       </div>
                       <input
-                        type="text"
-                        name="servicingCost"
-                        id="servicingCost"
+                        type="number"
                         className="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        placeholder="0.00"
-                        value={2000}
+                        {...register("servicingCost", {
+                          required: "Required",
+                          min: {
+                            value: 500,
+                            message: "Minimum servicing cost is 500",
+                          },
+                        })}
                       />
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
                         <span className="text-gray-500 sm:text-sm">NRS</span>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
-                  >
-                    Servicing Duration
-                  </label>
-                  <div className="mt-1 sm:mt-0 sm:col-span-2">
-                    <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
-                      <div className="block w-full rounded-md border-gray-300  focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        <select
-                          id="servicingDuration"
-                          name="servicingDuration"
-                          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                          defaultValue="Canada"
-                        >
-                          <option>After Every 2 Months</option>
-                          <option>After Every 3 Months</option>
-                          <option>After Every 4 Months</option>
-                        </select>
-                      </div>
-                    </div>
+                    <p className="text-sm text-red-600">
+                      {errors.servicingCost?.message}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -583,10 +543,9 @@ export default function Form() {
             </button>
             <button
               type="submit"
-              onClick={handleClick}
               className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-700 hover:bg-violet-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Start Comparision
+              Start Comparison
             </button>
           </div>
         </div>
