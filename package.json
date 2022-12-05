@@ -16,6 +16,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.6",
     "react-router-dom": "^6.3.0",
+    "readme-md-generator": "^1.0.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {

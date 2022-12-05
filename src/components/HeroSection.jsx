@@ -4,9 +4,9 @@ import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 
 const navigation = [
-  { name: "Compare", href: "#" },
-  { name: "Blog", href: "#" },
-  { name: "Developers", href: "#" },
+  { name: "Compare", href: "#startForm" },
+  { name: "Blog", href: "https://drive.google.com/file/d/1D0_yVi2BYav4rG_QpRH4sHwECpqiodD7/view" },
+  { name: "Developers", href: "https://github.com/kafle1" },
 ];
 
 export default function HeroSection() {

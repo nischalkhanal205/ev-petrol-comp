@@ -1,27 +1,38 @@
+<h1 align="center">Welcome to EV Petrol Cost Comparison 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.1.0-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: GPL" src="https://img.shields.io/badge/License-GPL-yellow.svg" />
+  </a>
+  <a href="https://twitter.com/buckwheat8848" target="_blank">
+    <img alt="Twitter: buckwheat8848" src="https://img.shields.io/twitter/follow/buckwheat8848.svg?style=social" />
+  </a>
+</p>
 
+> Complete cost comparison between Electric Vehicles and Fuel Powered Vehicles. You will get to know why you should go with expensive Electric Vehicles over cheap Petrol/Diesel Vehicles. Its time to bring the change !!
 
-# EV VS Fuel
+### 🏠 [Homepage](https://evfuel-comparison.netlify.app/)
 
-Cost Comparison between Fuel Vehicles & Electric Vehicles
+### ✨ [Demo](https://evfuel-comparison.netlify.app/)
 
-We just want to show the people of Nepal, why they should go with expensive Electric Vehicles over cheap Petrol/Diesel Vehicles. Its time to bring the change !!
-## Preview
+## Tech Used
+- React
+- Tailwind CSS
 
-![App Screenshot](https://i.ibb.co/85pdqB4/screencapture-localhost-5173-2022-11-06-18-53-44.png)
+## Author
 
-  
-## Tech Stack
+👤 **Niraj**
 
-React JS, Tailwind CSS
+* Website: https://buckwheat.showwcase.com/
+* Twitter: [@buckwheat8848](https://twitter.com/buckwheat8848)
+* Github: [@kafle1](https://github.com/kafle1)
 
-  
-## Developer
+👤 **Nischal**
 
-- [Niraj](https://www.github.com/kafle1)
-- [Nischal](https://github.com/nischalkhanal205)
+* Github: [@nischalkhanal205](https://github.com/nischalkhanal205)
 
-  
-## Support / Contact
+## Show your support
 
-For support, email kafleniraj@gmail.com, Discord: Buckwheat#2612
-  
+Give a ⭐️ if this project helped you!
+
+***
