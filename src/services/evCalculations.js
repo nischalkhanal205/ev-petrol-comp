@@ -59,15 +59,18 @@ export function calcChargeCost({
     dailyTravelDistance,
     chargeCycle,
   });
+
   if (comparisonDuration === "lifetime") {
-    const totalCost = chargeCycle * costPerCharge;
+    const totalCost = Math.round(chargeCycle * costPerCharge);
     return { batteryLife, totalCost };
   } else {
     // batteryLife --> 1500
     // 5 --> (1500/batteryLife) * 5
-    return (
+    return {
       batteryLife,
-      (chargeCycle / batteryLife) * Number(comparisonDuration) * costPerCharge
-    );
+      totalCost: Math.round(
+        (chargeCycle / batteryLife) * Number(comparisonDuration) * costPerCharge
+      ),
+    };
   }
 }

@@ -7,7 +7,7 @@ export function compareVehicles(data) {
   let fuelVehicleCost;
 
   const chargeCost = calcChargeCost(data);
-
+  console.log("chargeCosts", chargeCost);
   //calculate ev cost
   if (data.motorPower) {
     evCost = calcImportCost(data) + chargeCost.totalCost;
@@ -30,6 +30,10 @@ export function compareVehicles(data) {
       fuelVehicleCost
     )}. So you will save Rs. ${new Intl.NumberFormat("en-IN").format(
       fuelVehicleCost - evCost
-    )} in ${chargeCost.batteryLife} years`
+    )} in ${
+      data.comparisonDuration == "lifetime"
+        ? chargeCost.batteryLife
+        : data.comparisonDuration
+    } years`
   );
 }
