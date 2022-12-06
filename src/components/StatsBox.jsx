@@ -42,7 +42,7 @@ export default function StatsBox({ result, data }) {
 
   return (
     <div className="m-10">
-      <h3 className="text-2xl p-8 text-center leading-6 font-medium text-gray-900">
+      <h3 className="text-2xl p-8 text-center leading-6 font-bold text-gray-900">
         Final Comparison Between
         <span className="text-green-700 ">
           {" "}

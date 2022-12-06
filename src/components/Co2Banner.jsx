@@ -15,10 +15,12 @@ export default function Co2Banner({ result }) {
                 />
               </span>
               <p className="ml-3 font-medium text-white truncate">
-                <span className="md:hidden">You saved {result.co2Produced} Kgs of Co2 emission in{" "}
-                  {result.batteryLife ?? result.comparisonDuration} Yrs </span>
+                <span className="md:hidden">
+                  Save {result.co2Produced} Kgs of Co <sub>2 </sub> emission !!
+                </span>
                 <span className="hidden md:inline">
-                  Thats Awesome ! You will save {result.co2Produced} Kgs of Co2
+                  Thats Awesome ! You will save {result.co2Produced} Kgs of Co
+                  <sub>2 </sub>
                   Gas emission in{" "}
                   {result.batteryLife ?? result.comparisonDuration} Years if you
                   go for a EV !!
