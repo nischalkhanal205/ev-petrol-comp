@@ -1,15 +1,25 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+// import { FormContext } from "../state/formContext";
 
 const navigation = [
   { name: "Compare", href: "#startForm" },
-  { name: "Blog", href: "https://drive.google.com/file/d/1D0_yVi2BYav4rG_QpRH4sHwECpqiodD7/view" },
+  {
+    name: "Blog",
+    href: "https://drive.google.com/file/d/1D0_yVi2BYav4rG_QpRH4sHwECpqiodD7/view",
+  },
   { name: "Developers", href: "https://github.com/kafle1" },
 ];
 
 export default function HeroSection() {
+  // const [formState, setFormState] = useContext(FormContext);
+
+  // const handleLangChange = (lang) => {
+  //   console.log(lang)
+  //   setFormState({ ...formState, isNepali: !formState.isNepali });
+  // };
   return (
     <div className="relative bg-gray-50 overflow-hidden">
       <div
@@ -124,6 +134,7 @@ export default function HeroSection() {
                 <span className="inline-flex rounded-md shadow">
                   <a
                     href="#"
+                    // onClick={handleLangChange(formState.isNepali ? "np" : "en")}
                     className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50"
                   >
                     <svg
@@ -189,6 +200,7 @@ export default function HeroSection() {
                 </div>
                 <a
                   href="#"
+                  // onClick={handleLangChange(formState.isNepali ? "np" : "en")}
                   className="block w-full px-5 py-3 text-center font-medium  text-violet-700 bg-gray-50 hover:bg-gray-100"
                 >
                   Change Language
