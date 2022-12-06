@@ -44,8 +44,15 @@ export default function StatsBox({ result, data }) {
     <div className="m-10">
       <h3 className="text-2xl p-8 text-center leading-6 font-medium text-gray-900">
         Final Comparison Between
-        <span className="text-green-700 "> {data.evName} </span> and
-        <span className="text-indigo-700 "> {data.fuelVehicleName} </span>
+        <span className="text-green-700 ">
+          {" "}
+          {data.evName ? data.evName : "EV"}{" "}
+        </span>{" "}
+        and
+        <span className="text-indigo-700 ">
+          {" "}
+          {data.fuelVehicleName ? data.fuelVehicleName : "Fuel Vehicle"}{" "}
+        </span>
       </h3>
       <h3 className="text-lg leading-6 font-medium text-gray-900">
         Comparison Duration:{"  "}
@@ -98,9 +105,8 @@ export default function StatsBox({ result, data }) {
         ))}
       </dl>
 
-
       {showDetails && <StatsTable details={result} />}
-      <Recalculate/>
+      <Recalculate />
     </div>
   );
 }
