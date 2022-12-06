@@ -16,4 +16,5 @@ export const initialFormState = {
   mileage: 35,
   servicingCost: 2000,
   servicingDuration: 2,
+  isNepali: false
 };

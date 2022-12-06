@@ -62,12 +62,13 @@ export function calcChargeCost({
 
   if (comparisonDuration === "lifetime") {
     const totalCost = Math.round(chargeCycle * costPerCharge);
-    return { batteryLife, totalCost };
+    return { batteryLife, totalCost, costPerCharge };
   } else {
     // batteryLife --> 1500
     // 5 --> (1500/batteryLife) * 5
     return {
       batteryLife,
+      costPerCharge,
       totalCost: Math.round(
         (chargeCycle / batteryLife) * Number(comparisonDuration) * costPerCharge
       ),

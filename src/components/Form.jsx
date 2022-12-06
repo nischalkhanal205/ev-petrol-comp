@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
 import { FormContext } from "../state/formContext";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 import { compareVehicles } from "../services/compareVehicles";
 
 export default function Form() {
   const [formState, setFormState] = useContext(FormContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -15,7 +17,9 @@ export default function Form() {
   const onSubmit = (data) => {
     setFormState(data);
 
-    compareVehicles(data);
+    const result = compareVehicles(data);
+
+    navigate("/result", { state: { result, data } });
   };
 
   return (
@@ -175,6 +179,7 @@ export default function Form() {
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
                       <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
                         <input
+                          step="0.1"
                           {...register("motorPower", {
                             required: "Required",
                             min: {
