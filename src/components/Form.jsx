@@ -452,7 +452,7 @@ export default function Form() {
                     htmlFor="name"
                     className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
                   >
-                    Mileage
+                    Actual Mileage
                   </label>
                   <div className="mt-1 sm:mt-0 sm:col-span-2">
                     <div className="relative mt-1 rounded-md shadow-sm max-w-lg flex">
