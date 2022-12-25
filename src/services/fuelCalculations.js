@@ -12,8 +12,7 @@ export function calcFuelCost({
   dailyTravelDistance = Number(dailyTravelDistance);
   mileage = Number(mileage);
 
-  //Calculate per day consumption (-12 to match real life mileage)
-  const perDayConsumption = dailyTravelDistance / (mileage - 12);
+  const perDayConsumption = dailyTravelDistance / (mileage);
 
   //Get the battery life
   const batteryLife = calcBatteryLife({
